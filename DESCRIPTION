@@ -1,6 +1,6 @@
 Package: penalizedclr
 Title: Integrative Penalized Conditional Logistic Regression
-Version: 0.1.0
+Version: 2.0.0
 Authors@R: c(
     person(given = "Vera",
            family = "Djordjilovi\'c",
@@ -16,14 +16,14 @@ Description: Implements L1 and L2 penalized conditional logistic regression with
     stability selection for variable selection. 
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.1.1
-Imports: penalized, survival, clogitL1, stats, tidyverse
-Suggests: parallel, knitr, rmarkdown
+RoxygenNote: 7.2.3
+Imports: penalized, survival, clogitL1, stats
+Suggests: parallel, knitr, rmarkdown, tidyverse
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2021-04-21 17:08:54 UTC; veradj
+Packaged: 2023-07-20 17:25:05 UTC; veradj
 Author: Vera Djordjilovi'c [aut, cre] (<https://orcid.org/0000-0002-7670-3111>),
   Erica Ponzi [aut]
 Maintainer: Vera Djordjilovi'c <vera.djordjilovic@unive.it>
 Repository: CRAN
-Date/Publication: 2021-04-22 07:30:02 UTC
+Date/Publication: 2023-07-20 18:50:06 UTC

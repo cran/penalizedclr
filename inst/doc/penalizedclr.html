@@ -14,25 +14,38 @@
 
 <title>penalizedclr: an R package for penalized conditional logistic regression</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -50,55 +63,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -107,13 +119,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -125,7 +144,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -137,240 +336,353 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<h1 class="title toc-ignore"><tt>penalizedclr</tt>: an R package for penalized conditional logistic regression</h1>
+<h1 class="title toc-ignore"><tt>penalizedclr</tt>: an R package for
+penalized conditional logistic regression</h1>
 
 
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>The R package <tt>penalizedclr</tt> provides an implementation of the penalized logistic regression model that can be used in the analysis of matched case-control studies. The implementation allows to apply different penalties to different blocks of covariates, and is therefore particularly useful in the presence of multi-source heterogenous data, such as multiple layers of omics measurements. Both L1 and L2 penalties are implemented. Additionally, the package implements stability selection to allow for variable selection in the considered regression model.</p>
+<p>The R package <tt>penalizedclr</tt> provides an implementation of the
+penalized logistic regression model that can be used in the analysis of
+matched case-control studies. The implementation allows to apply
+different penalties to different blocks of covariates, and is therefore
+particularly useful in the presence of multi-source heterogenous data,
+such as multiple layers of omics measurements. Both L1 and L2 penalties
+are implemented. Additionally, the package implements stability
+selection to allow for variable selection in the considered regression
+model.</p>
 </div>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
 <p>You can install the released version of <tt>penalizedclr</tt> from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;penalizedclr&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;penalizedclr&quot;</span>)</span></code></pre></div>
 <p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">&quot;veradjordjilovic/penalizedclr&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">&quot;veradjordjilovic/penalizedclr&quot;</span>)</span></code></pre></div>
 <p>Load the package with:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(penalizedclr)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(penalizedclr)</span></code></pre></div>
 </div>
 <div id="the-setting" class="section level2">
 <h2>The setting</h2>
-<p>Assume that we have <span class="math inline">\(K\)</span> independent matched case-control pairs <span class="math inline">\((Y_{ki}, X_{ki})\)</span>, where <span class="math inline">\(Y_{ki}\)</span>, <span class="math inline">\(k=1,\ldots,K;\)</span> <span class="math inline">\(i=1,2,\)</span> is a binary variable indicating case control status (1 if case, 0 if control) and <span class="math inline">\(X_{ki}\)</span> is the associated <span class="math inline">\(p\)</span>-dimensional vector of covariates. The conditional logistic regression models the probability of being a case given that the observation belongs to the <span class="math inline">\(k\)</span>-th pair as: <span class="math display">\[
-{\mathrm {logit}}\left[P(Y_{ki}=1 \mid S=k)\right] = \beta_{0k} + \beta^{T}X_{ki}, \quad k\in\left\{1,\ldots, K\right\}, i\in\left\{1,2\right\}
-\]</span> where <span class="math inline">\(S\)</span> is the matched pair id, <span class="math inline">\(\beta_{0k}\)</span> is the pair specific intercept and <span class="math inline">\(\beta=(\beta_1, \ldots,\beta_p)^T\)</span> is a <span class="math inline">\(p\)</span>-dimensional vector of fixed effects.</p>
+<p>Assume that we have <span class="math inline">\(K\)</span>
+independent matched case-control pairs <span class="math inline">\((Y_{ki}, X_{ki})\)</span>, where <span class="math inline">\(Y_{ki}\)</span>, <span class="math inline">\(k=1,\ldots,K;\)</span> <span class="math inline">\(i=1,2,\)</span> is a binary variable indicating
+case control status (1 if case, 0 if control) and <span class="math inline">\(X_{ki}\)</span> is the associated <span class="math inline">\(p\)</span>-dimensional vector of covariates. The
+conditional logistic regression models the probability of being a case
+given that the observation belongs to the <span class="math inline">\(k\)</span>-th pair as: <span class="math display">\[
+{\mathrm {logit}}\left[P(Y_{ki}=1 \mid S=k)\right] = \beta_{0k} +
+\beta^{T}X_{ki}, \quad k\in\left\{1,\ldots, K\right\},
+i\in\left\{1,2\right\}
+\]</span> where <span class="math inline">\(S\)</span> is the matched
+pair id, <span class="math inline">\(\beta_{0k}\)</span> is the pair
+specific intercept and <span class="math inline">\(\beta=(\beta_1,
+\ldots,\beta_p)^T\)</span> is a <span class="math inline">\(p\)</span>-dimensional vector of fixed
+effects.</p>
 <p>In the present package we:</p>
 <ul>
-<li><p>estimate <span class="math inline">\(\beta\)</span> in the high dimensional setting in which the number of covariates <span class="math inline">\(p\)</span> is much higher than the number of pairs <span class="math inline">\(K\)</span>. We consider a penalized conditional logistic regression, which adds a penalty to the conditional log likelihood. Motivated by current medical applications considering clinical and molecular data, we allow <span class="math inline">\(X_{ki}\)</span> to be a merge of heteregenous data sources;</p></li>
-<li><p>perform stability selection to identify important variables, that is, variables for which <span class="math inline">\(\beta_j\neq 0\)</span>, <span class="math inline">\(j\in\left\{1,\ldots,p\right\}\)</span>.</p></li>
+<li><p>estimate <span class="math inline">\(\beta\)</span> in the high
+dimensional setting in which the number of covariates <span class="math inline">\(p\)</span> is much higher than the number of pairs
+<span class="math inline">\(K\)</span>. We consider a penalized
+conditional logistic regression, which adds a penalty to the conditional
+log likelihood. Motivated by current medical applications considering
+clinical and molecular data, we allow <span class="math inline">\(X_{ki}\)</span> to be a merge of heteregenous data
+sources;</p></li>
+<li><p>perform stability selection to identify important variables, that
+is, variables for which <span class="math inline">\(\beta_j\neq
+0\)</span>, <span class="math inline">\(j\in\left\{1,\ldots,p\right\}\)</span>.</p></li>
 </ul>
 </div>
 <div id="examples" class="section level2">
 <h2>Examples</h2>
-<p>In this section we provide examples of how to fit a penalized conditional regression model with source-specific penalty parameters and how to perform variable selection with <tt>penalizedclr</tt>.</p>
+<p>In this section we provide examples of how to fit a penalized
+conditional regression model with source-specific penalty parameters and
+how to perform variable selection with <tt>penalizedclr</tt>.</p>
 <p>Initial settings and libraries to be loaded:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(tidyverse)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 <div id="data-generation" class="section level3">
 <h3>Data generation</h3>
-<p>We generate a simple multi-source data set, with two groups of covariates containing 80 and 20 variables, respectively. As specified above, each case is matched to a control, and the probability of being a case in each stratum (case-control pair) is obtained from the linear predictor. An intercept is generated independently for each stratum.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># two groups of predictors</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">80</span>, <span class="dv">20</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># percentage and number of non-null variables</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>p_nz <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>m_nz <span class="ot">&lt;-</span> <span class="fu">round</span>(p<span class="sc">*</span>p_nz, <span class="dv">0</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># number of different strata (case-control pairs)</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="dv">125</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># number of cases and controls in each stratum (not necessarily 1:1 matching, other designs are also allowed)</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>n_cases <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>n_ctrl <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># generating covariates</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">cbind</span>(<span class="fu">matrix</span>(<span class="fu">rnorm</span>(p[<span class="dv">1</span>] <span class="sc">*</span> K <span class="sc">*</span> (n_cases <span class="sc">+</span> n_ctrl), <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">ncol =</span> p[<span class="dv">1</span>]),</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>          <span class="fu">matrix</span>(<span class="fu">rnorm</span>(p[<span class="dv">2</span>] <span class="sc">*</span> K <span class="sc">*</span> (n_cases <span class="sc">+</span> n_ctrl), <span class="dv">0</span>, <span class="dv">2</span>), <span class="at">ncol =</span> p[<span class="dv">2</span>]))</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># coefficients</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">c</span>(<span class="fu">rnorm</span>(m_nz[<span class="dv">1</span>], <span class="dv">0</span>, <span class="fl">0.8</span>),</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">rep</span>(<span class="dv">0</span>, p[<span class="dv">1</span>] <span class="sc">-</span> m_nz[<span class="dv">1</span>]),</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">rnorm</span>(m_nz[<span class="dv">2</span>], <span class="fl">0.1</span>, <span class="fl">0.4</span>),</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">rep</span>(<span class="dv">0</span>, p[<span class="dv">2</span>] <span class="sc">-</span> m_nz[<span class="dv">2</span>])), <span class="at">ncol =</span> <span class="dv">1</span>)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>beta_stratum <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">rnorm</span>(K, <span class="dv">0</span>, <span class="dv">2</span>), <span class="at">each=</span> n_cases<span class="sc">+</span>n_ctrl)</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># stratum membership</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>stratum <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>K, <span class="at">each=</span> n_cases<span class="sc">+</span>n_ctrl)</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co"># linear predictor</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>lin_pred <span class="ot">&lt;-</span> beta_stratum <span class="sc">+</span> X <span class="sc">%*%</span> beta</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>prob_case <span class="ot">&lt;-</span> <span class="fu">exp</span>(lin_pred) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(lin_pred))</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co"># generate the response</span></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(stratum))</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>data_sim <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">data.frame</span>(<span class="at">stratum =</span> stratum,</span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">probability =</span> prob_case,</span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">obs_id =</span> <span class="dv">1</span> <span class="sc">:</span> <span class="fu">length</span>(stratum)))</span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>data_sim_cases <span class="ot">&lt;-</span> data_sim <span class="sc">%&gt;%</span></span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(stratum)<span class="sc">%&gt;%</span></span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(n_cases, <span class="at">weight =</span> probability)</span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>Y[data_sim_cases<span class="sc">$</span>obs_id] <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
+<p>We generate a simple multi-source data set, with two groups of
+covariates containing 12 and 40 variables, respectively. As specified
+above, each case is matched to a control, and the probability of being a
+case in each stratum (case-control pair) is obtained from the linear
+predictor. An intercept is generated independently for each stratum.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># two groups of predictors</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">40</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># percentage and number of non-null variables</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>p_nz <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.2</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>m_nz <span class="ot">&lt;-</span> <span class="fu">round</span>(p<span class="sc">*</span>p_nz, <span class="dv">0</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co"># number of different strata (case-control pairs)</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co"># number of cases and controls in each stratum (not necessarily 1:1 matching,</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co"># other designs are also allowed)</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>n_cases <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>n_ctrl <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co"># generating covariates</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">cbind</span>(<span class="fu">matrix</span>(<span class="fu">rnorm</span>(p[<span class="dv">1</span>] <span class="sc">*</span> K <span class="sc">*</span> (n_cases <span class="sc">+</span> n_ctrl), <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">ncol =</span> p[<span class="dv">1</span>]),</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>          <span class="fu">matrix</span>(<span class="fu">rnorm</span>(p[<span class="dv">2</span>] <span class="sc">*</span> K <span class="sc">*</span> (n_cases <span class="sc">+</span> n_ctrl), <span class="dv">0</span>, <span class="dv">4</span>), <span class="at">ncol =</span> p[<span class="dv">2</span>]))</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co"># coefficients</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>beta <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">c</span>(<span class="fu">rnorm</span>(m_nz[<span class="dv">1</span>], <span class="dv">4</span>, <span class="dv">1</span>),</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>                    <span class="fu">rep</span>(<span class="dv">0</span>, p[<span class="dv">1</span>] <span class="sc">-</span> m_nz[<span class="dv">1</span>]),</span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>                    <span class="fu">rnorm</span>(m_nz[<span class="dv">2</span>], <span class="dv">2</span>, <span class="fl">0.8</span>),</span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>                    <span class="fu">rep</span>(<span class="dv">0</span>, p[<span class="dv">2</span>] <span class="sc">-</span> m_nz[<span class="dv">2</span>])), <span class="at">ncol =</span> <span class="dv">1</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co"># stratum membership</span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>stratum <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>K, <span class="at">each=</span> n_cases<span class="sc">+</span>n_ctrl)</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co"># linear predictor</span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>lin_pred <span class="ot">&lt;-</span>  X <span class="sc">%*%</span> beta</span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a>prob_case <span class="ot">&lt;-</span> <span class="fu">exp</span>(lin_pred) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(lin_pred))</span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a><span class="co"># generate the response</span></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(stratum))</span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a></span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a>data_sim <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">data.frame</span>(<span class="at">stratum =</span> stratum,</span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a>                                 <span class="at">probability =</span> prob_case,</span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a>                                 <span class="at">obs_id =</span> <span class="dv">1</span> <span class="sc">:</span> <span class="fu">length</span>(stratum)))</span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a>data_sim_cases <span class="ot">&lt;-</span> data_sim <span class="sc">%&gt;%</span></span>
+<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a>  <span class="fu">group_by</span>(stratum)<span class="sc">%&gt;%</span></span>
+<span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a>  <span class="fu">sample_n</span>(n_cases, <span class="at">weight =</span> probability)</span>
+<span id="cb5-49"><a href="#cb5-49" tabindex="-1"></a></span>
+<span id="cb5-50"><a href="#cb5-50" tabindex="-1"></a>Y[data_sim_cases<span class="sc">$</span>obs_id] <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
 </div>
 <div id="penalized-conditional-logistic-regression-model-fit" class="section level3">
 <h3>Penalized conditional logistic regression: model fit</h3>
-<p>The function <tt>penalized.clr</tt> fits a penalized conditional logistic regression model with different penalties for different blocks of covariates. The L1 penalty parameter <code>lambda</code> (a numeric vector of the length equal to the number of blocks) can be specified by the user or computed internally. In the latter case, cross-validation is performed internally for each data layer separately. It is also possible to apply elastic net penalty through parameter <code>alpha</code>.</p>
-<div id="case-1-penalty-parameters-provided-by-the-user" class="section level4">
-<h4>Case 1: Penalty parameters provided by the user</h4>
-<p>This code illustrates how to fit <tt>penalized.clr</tt> with penalty parameters specified by the user. Here <tt>Y</tt> is the response vector, <tt>X</tt> is the multi-source matrix of covariates, <tt>stratum</tt> is the vector of ids of the matching pairs, and <tt>p</tt> is the vector of block dimensions. It has the same dimension as the vector of penalty parameters <tt>lambda</tt>. Penalty parameters are thus specified for each data source, i.e., a block of covariates. It is possible to standardize the variables by setting <tt>standardize = TRUE</tt> (<tt>FALSE</tt> by default).</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">penalized.clr</span>(<span class="at">response =</span> Y, <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>), <span class="at">p =</span> p, <span class="at">standardize =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>The function <tt>penalized.clr</tt> fits a penalized conditional
+logistic regression model with different penalties for different blocks
+of covariates. The L1 penalty parameter <code>lambda</code> (a numeric
+vector of the length equal to the number of blocks) is specified by the
+user.</p>
+<p>This code illustrates how to fit <tt>penalized.clr</tt> with penalty
+parameters specified by the user. Here <tt>Y</tt> is the response
+vector, <tt>X</tt> is the multi-source matrix of covariates,
+<tt>stratum</tt> is the vector of ids of the matching pairs, and
+<tt>p</tt> is the vector of block dimensions. It has the same dimension
+as the vector of penalty parameters <tt>lambda</tt>. Penalty parameters
+are thus specified for each data source, i.e., a block of covariates. It
+is possible to standardize the variables by setting <tt>standardize =
+TRUE</tt> (<tt>TRUE</tt> by default).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">penalized.clr</span>(<span class="at">response =</span> Y, <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum, </span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                      <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>), <span class="at">p =</span> p, <span class="at">standardize =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>The function returns a list with elements:</p>
 <ol style="list-style-type: decimal">
-<li><p><tt>penalized</tt> - Regression coefficients for the penalized covariates.</p></li>
-<li><p><tt>unpenalized</tt> - Regression coefficients for the unpenalized covariates.</p></li>
-<li><p><tt>converged</tt> - Whether the fitting process was judged to be converged.</p></li>
+<li><p><tt>penalized</tt> - Regression coefficients for the penalized
+covariates.</p></li>
+<li><p><tt>unpenalized</tt> - Regression coefficients for the
+unpenalized covariates.</p></li>
+<li><p><tt>converged</tt> - Whether the fitting process was judged to be
+converged.</p></li>
 <li><p><tt>lambda</tt> - The tuning parameter for L1 used.</p></li>
 <li><p><tt>alpha</tt> - The elastic net mixing parameter used.</p></li>
+<li><p><tt>Y</tt> - The response vector saved as a survival object used
+internally.</p></li>
 </ol>
-<p>For instance, <code>fit1$penalized</code> is a numeric vector containing the regression coefficients for the penalized covariates. We can compare estimated coefficients with the true coefficients (the ones that generated our data), by constructing a <code>2 x 2</code> contingency table cross-tabulating true non-zero and estimated non-zero coefficients:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>nonzero_index <span class="ot">&lt;-</span> (beta <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">1</span> <span class="co">#index of nonzero coefficients</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">fitted =</span> (fit1<span class="sc">$</span>penalized <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">1</span>, nonzero_index)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       nonzero_index</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; fitted  0  1</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      0 51 17</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      1 17 15</span></span></code></pre></div>
-</div>
-<div id="case-2-penalty-parameters-computed-internally" class="section level4">
-<h4>Case 2: Penalty parameters computed internally</h4>
-<p>When the user does not specify the penalty parameters, they are computed internally for each data source separately based on cross-validation.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">penalized.clr</span>(<span class="at">response =</span> Y, <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">p =</span> p,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">standardize =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p>The selected penalty coefficients are:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fit2<span class="sc">$</span>lambda</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 4.958049 5.641397</span></span></code></pre></div>
-<p>The package uses fast cross-validation implemented in the R package <tt>clogitL1</tt> (see the function <tt>find.default.lambda</tt> described below). We recommend to inspect manually the obtained <code>lambda</code> parameters. It is also recommended to investigate different ratios of data-source specific penalties (see, for instance, Boulesteix et al. 2017 and examples of penalty grids therein). Note that cross validation depends on random data splits, and different runs will return different values of <code>lambda</code>.</p>
-</div>
-<div id="case-3-blocks-not-provided" class="section level4">
-<h4>Case 3: Blocks not provided</h4>
-<p>This code shows what happens when no information is given about the blocks of predictors (<code>p</code>). In this case, all covariates are considered to form a single block and are penalized equally.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">penalized.clr</span>(<span class="at">response =</span> Y, <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">standardize =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p>The selected penalty coefficient is:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit3<span class="sc">$</span>lambda</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 4.62712</span></span></code></pre></div>
-</div>
-<div id="case-4-unpenalized-covariates" class="section level4">
-<h4>Case 4: Unpenalized covariates</h4>
-<p>Somethimes, a subset of covariates should be excluded from penalization. This can be achieved by specifying the <code>unpenalized</code> argument. In what follows, we penalize the first block of covariates, and leave the remaining block unpenalized.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>X1 <span class="ot">&lt;-</span> X[, <span class="dv">1</span><span class="sc">:</span>p[<span class="dv">1</span>]]</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>X2 <span class="ot">&lt;-</span> X[, (p[<span class="dv">1</span>]<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(p[<span class="dv">1</span>]<span class="sc">+</span>p[<span class="dv">2</span>])]</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">penalized.clr</span>(<span class="at">response =</span> Y, <span class="at">penalized =</span> X1, <span class="at">unpenalized =</span> X2, </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">stratum =</span> stratum, <span class="at">p =</span> p[<span class="dv">1</span>], </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">standardize =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p>This can be particularly useful when performing variable selection on omics variables (penalized) while adjusting for clinical covariates that should not be penalized.</p>
-</div>
-<div id="case-5-elastic-net-penalty" class="section level4">
-<h4>Case 5: Elastic net penalty</h4>
-<p>The package <tt>penalizedclr</tt> is not limited to L1, i.e. lasso, penalty. While L1 penalty is more suited for variable selection, in the presence of highly correlated covariates, it can be useful to add small amount of L2 penalty. The two can be combined in an elastic net framework by specifying the mixing parameter <code>alpha</code> that can assume values between 0 and 1. Default <code>alpha=1</code> gives lasso.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">penalized.clr</span>(<span class="at">response =</span> Y, <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">p =</span> p,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">standardize =</span> <span class="cn">TRUE</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>)</span></code></pre></div>
-</div>
+<p>For instance, <code>fit1$penalized</code> is a numeric vector
+containing the regression coefficients for the penalized covariates. In
+this simple example, we can compare estimated coefficients with the true
+coefficients (the ones that generated our data), by constructing a
+<code>2 x 2</code> contingency table cross-tabulating true non-zero and
+estimated non-zero coefficients:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">str</span>(fit1)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; List of 6</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt;  $ penalized  : num [1:52] 0.251 0.212 0.584 0.402 0.613 ...</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt;  $ unpenalized: num(0) </span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt;  $ converged  : logi TRUE</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt;  $ lambda     : num [1:2] 1 4</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt;  $ alpha      : num 1</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt;  $ Y          : &#39;Surv&#39; num [1:200, 1:2] 1+ 1  1+ 1  1  1+ 1+ 1  1  1+ ...</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;dimnames&quot;)=List of 2</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt;   .. ..$ : NULL</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;   .. ..$ : chr [1:2] &quot;time&quot; &quot;status&quot;</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;type&quot;)= chr &quot;right&quot;</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>nonzero_index <span class="ot">&lt;-</span> (beta <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">1</span> <span class="co">#index of nonzero coefficients</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="fu">table</span>(<span class="at">fitted =</span> (fit1<span class="sc">$</span>penalized <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">1</span>, nonzero_index)</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt;       nonzero_index</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; fitted  0  1</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt;      0 19  2</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt;      1 19 12</span></span></code></pre></div>
+<p>The package <tt>penalizedclr</tt> is not limited to L1, i.e. lasso,
+penalty. While L1 penalty is more suited for variable selection, in the
+presence of highly correlated covariates, it can be useful to add small
+amount of L2 penalty. The two can be combined in an elastic net
+framework by specifying the mixing parameter <code>alpha</code> that can
+assume values between 0 and 1. Default <code>alpha=1</code> gives
+lasso.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">penalized.clr</span>(<span class="at">response =</span> Y, <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum, </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                      <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>),<span class="at">p =</span> p, <span class="at">standardize =</span> <span class="cn">TRUE</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>)</span></code></pre></div>
 </div>
 <div id="penalized-conditional-logistic-regression-stability-selection" class="section level3">
 <h3>Penalized conditional logistic regression: stability selection</h3>
-<p>The function <tt>stable.clr</tt> performs stability selection (Meinshausen and Bühlmann 2010 and Shah and Samworth 2013) for variable selection in penalized conditional logistic regression. For details on stability selection, we refer to the original publications. Briefly, a set of L1 penalties is considered, and for each considered value of the penalty, <span class="math inline">\(2B\)</span> random subsamples of <span class="math inline">\(\lfloor K/2 \rfloor\)</span> matched pairs are taken and a penalized model is estimated. For each covariate and penalty value, selection probability is estimated as the proportion of estimated models in which the associated coefficient estimate is different from zero. Finally, the overall selection probability of a variable is obtained by taking the maximum selection probability over all considered penalty values.</p>
-<p>Parameter <span class="math inline">\(B\)</span> is set to 100 by default, but can be changed by the user. Note that this choice will have an impact on the computation time, and higher values of <span class="math inline">\(B\)</span> will lead to a slower computation.</p>
-<p>The function returns a list containing the selection probabilities for each covariate, i.e. the proportion of estimated models in which the associated coefficient estimate is different from zero. The user can then set a threshold for selection probability (values ranging from 0.55 to 0.9 are recommended) and obtain the set of selected covariates.</p>
+<p>The function <tt>stable.clr</tt> performs stability selection
+(Meinshausen and Bühlmann 2010 and Shah and Samworth 2013) for variable
+selection in penalized conditional logistic regression. For details on
+stability selection, we refer to the original publications. Briefly, a
+set of L1 penalties is considered, and for each considered value of the
+penalty, <span class="math inline">\(2B\)</span> random subsamples of
+<span class="math inline">\(\lfloor K/2 \rfloor\)</span> matched pairs
+are taken and a penalized model is estimated. For each covariate and
+penalty value, selection probability is estimated as the proportion of
+estimated models in which the associated coefficient estimate is
+different from zero. Finally, the overall selection probability of a
+variable is obtained by taking the maximum selection probability over
+all considered penalty values.</p>
+<p>Parameter <span class="math inline">\(B\)</span> is set to 100 by
+default, but can be changed by the user. Note that this choice will have
+an impact on the computation time, and higher values of <span class="math inline">\(B\)</span> will lead to a slower computation.</p>
+<p>The function returns a list containing the selection probabilities
+for each covariate, i.e. the proportion of estimated models in which the
+associated coefficient estimate is different from zero. The user can
+then set a threshold for selection probability (values ranging from 0.55
+to 0.9 are recommended) and obtain the set of selected covariates.</p>
 <div id="case-1-penalty-parameters-specified-by-the-user" class="section level4">
 <h4>Case 1: Penalty parameters specified by the user</h4>
-<p>The following code performs stability selection when all covariates are considered as a single block (a single data source) and a sequence of L1 penalties contains only 2 values.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>stable1 <span class="ot">&lt;-</span> <span class="fu">stable.clr</span>(<span class="at">response =</span> Y,</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">lambda.seq =</span> <span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">20</span>))</span></code></pre></div>
+<p>The following code performs stability selection when all covariates
+are considered as a single block (a single data source) and a sequence
+of L1 penalties contains 3 values.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>stable1 <span class="ot">&lt;-</span> <span class="fu">stable.clr</span>(<span class="at">response =</span> Y, <span class="at">B =</span> <span class="dv">50</span>,</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>                      <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                      <span class="at">lambda.seq =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">6</span>), <span class="at">parallel =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>The function returns a list with two elements:</p>
 <ol style="list-style-type: decimal">
-<li><p><tt>Pilambda</tt> a numeric vector giving estimates of selection probabilities for each penalized covariate.</p></li>
+<li><p><tt>Pistab</tt> a numeric vector giving estimates of selection
+probabilities for each penalized covariate.</p></li>
 <li><p><tt>lambda.seq</tt> a sequence of L1 penalties used.</p></li>
 </ol>
-<p>To inspect the results, we can, for instance, print the covariates with selection probability higher than 0.6:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(stable1<span class="sc">$</span>P<span class="sc">&gt;</span><span class="fl">0.6</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 82 86 87 90</span></span></code></pre></div>
+<p>To inspect the results, we can, for instance, print the covariates
+with selection probability higher than 0.6: 2, 3, 4, 5, 13, 16, 17, 18,
+39, 47.</p>
+<p>We can inspect the histogram of selection probabilities.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">hist</span>(stable1<span class="sc">$</span>Pistab, <span class="at">xlab =</span> <span class="st">&quot;Selection probability&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Frequency&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>and compute variable selection classification accuracy:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>(tab1 <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">stable =</span> (stable1<span class="sc">$</span>P<span class="sc">&gt;</span><span class="fl">0.65</span>) <span class="sc">*</span> <span class="dv">1</span>, nonzero_index))</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt;       nonzero_index</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; stable  0  1</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt;      0 37  7</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt;      1  1  7</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>(tab1[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">+</span> tab1[<span class="dv">2</span>,<span class="dv">2</span>])<span class="sc">/</span>(<span class="fu">sum</span>(tab1))</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; [1] 0.8461538</span></span></code></pre></div>
+<p>This histrogram shows null variables in blue and signal variables in
+red.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># plotting selection probabilities for true non-zero (red) and zero (blue) coefficients</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>s_prob_nonzero <span class="ot">&lt;-</span> <span class="fu">cut</span>(stable1<span class="sc">$</span>P[nonzero_index <span class="sc">==</span> <span class="dv">1</span>], </span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>                      <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.1</span>), <span class="at">ordered_result =</span> T)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>s_prob_zero <span class="ot">&lt;-</span> <span class="fu">cut</span>(stable1<span class="sc">$</span>P[nonzero_index <span class="sc">==</span> <span class="dv">0</span>], </span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>                   <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.1</span>), <span class="at">ordered_result =</span> T)</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(s_prob_nonzero), <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">table</span>(s_prob_zero), <span class="at">add =</span>T, <span class="at">col =</span> <span class="dv">4</span> )</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
-<div id="case-2-penalty-parameters-computed-externally" class="section level4">
-<h4>Case 2: Penalty parameters computed externally</h4>
-<p>It is possible to obtain the sequence of L1 penalty parameters via the function <tt>find.default.lambda</tt>. It relies on the <code>cv.clogitL1</code> function of the <code>clogitL1</code> package to perform cross-validation to determine a suitable <code>lambda</code> sequence. Note that it considers each data source separately and returns a sequence of four values per source (the optimal penalty along with three additional values, see package documentation for details). The number of folds is set to 10 by default but can also be specified by the user.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>lambda.seq <span class="ot">&lt;-</span> <span class="fu">find.default.lambda</span>(<span class="at">response =</span> Y, </span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">stratum =</span> stratum, </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">penalized =</span> X, </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">alpha=</span><span class="dv">1</span>,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">nfolds =</span> <span class="dv">10</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>lambda.seq</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  5.300950  6.988013  9.211995 12.143774</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>stable2 <span class="ot">&lt;-</span> <span class="fu">stable.clr</span>(<span class="at">response =</span> Y,</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">lambda.seq =</span> lambda.seq)</span></code></pre></div>
-<p>Covariates with selection probability higher than 0.6:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(stable2<span class="sc">$</span>P<span class="sc">&gt;</span><span class="fl">0.6</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  1 14 58 82 86 87 90 93</span></span></code></pre></div>
+<div id="case-2-multiple-data-sources" class="section level4">
+<h4>Case 2: Multiple data sources</h4>
+<p>This code implements stability selection while taking into account
+the block structure of covariates (<span class="math inline">\(p\)</span>). To achieve this, we use the function
+<tt>stable.clr.g</tt> which extends <tt>stable.clr</tt> to allow for
+blocks (groups) of covariates. In this case, the function takes as an
+argument <code>lambda.list</code>, a list of numeric vectors of L1
+penalties. Each vector has the length equal to the number of blocks,
+with the <span class="math inline">\(i\)</span>th element giving the
+penalty to be applied to the <span class="math inline">\(i\)</span>th
+data source.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>stable2 <span class="ot">&lt;-</span> penalizedclr<span class="sc">::</span><span class="fu">stable.clr.g</span>(<span class="at">response =</span> Y, <span class="at">p =</span> p, </span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>                                      <span class="at">standardize =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>                                      <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>                                      <span class="at">lambda.list =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)))</span></code></pre></div>
+<p>The selection probability histogram in this case.</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
-<div id="case-3-penalty-parameters-computed-internally" class="section level4">
-<h4>Case 3: Penalty parameters computed internally</h4>
-<p>If we do not specify the penalty parameters as in case 2, <tt>stable.clr</tt> will compute them by default by using <tt>find.default.lambda</tt> with default options. We only need to run:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>stable3 <span class="ot">&lt;-</span> <span class="fu">stable.clr</span>(<span class="at">response =</span> Y,</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">penalized =</span> X, </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">stratum =</span> stratum)</span></code></pre></div>
-<p>The selected sequence of <code>lambda</code> is:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>stable3<span class="sc">$</span>lambda.seq</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  6.521593  8.023312  9.870830 12.143774</span></span></code></pre></div>
-<p>Covariates with selection probability higher than 0.6:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(stable3<span class="sc">$</span>P<span class="sc">&gt;</span><span class="fl">0.6</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  1 82 86 87 90 93</span></span></code></pre></div>
-</div>
-<div id="case-4-covariates-divided-into-blocks" class="section level4">
-<h4>Case 4: Covariates divided into blocks</h4>
-<p>This code implements stability selection while taking into account the block structure of covariates (<span class="math inline">\(p\)</span>). To achieve this, we use the function <tt>stable.clr.g</tt> which extends <tt>stable.clr</tt> to allow for blocks (groups) of covariates. In this case, the function takes as an argument <code>lambda.list</code>, a list of sequences of L1 penalties, one for each block. Note that the computation time depends on the length of the block-specific sequences: for each combination of penalties, <span class="math inline">\(2B\)</span> subsamples are taken and used to estimate a penalized conditional logistic regression model.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>lambda.list <span class="ot">&lt;-</span> <span class="fu">find.default.lambda</span>(<span class="at">response =</span> Y,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">p =</span> p)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>lambda.list</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 10.67917 13.13825 16.16358 19.88555</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  9.211995 12.143774 16.008612 21.103461</span></span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>stable.g1 <span class="ot">&lt;-</span> <span class="fu">stable.clr.g</span>(<span class="at">response =</span> Y,</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">penalized =</span> X,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">stratum =</span> stratum,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">p =</span> p,</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">lambda.list =</span> lambda.list)</span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(stable.g1<span class="sc">$</span>P<span class="sc">&gt;</span><span class="fl">0.6</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 82 86 87 90 93</span></span></code></pre></div>
-<p>Note that if <span class="math inline">\(p\)</span> is not specified, the package will automatically run <tt>stable.clr</tt> and apply equal penalties for all covariates.</p>
+<div id="case-3-data-adaptive-penalty-parameters" class="section level4">
+<h4>Case 3: Data adaptive penalty parameters</h4>
+<p>It is possible to obtain a data adaptive sequence of L1 penalty
+parameters via the functions <tt>default.pf</tt>, that searches for the
+suitable vector of penalty factors (up to a multiplicative constant),
+and <tt>find.default.lambda</tt> that searches for the optimal L1
+penalty for a given vector of penalty factors.</p>
+<p>The first function, follows the procedure proposed by Gerhard Schulze
+in his Master Thesis (Clinical Outcome Prediction based on Multi-Omics
+Data: Extension of IPF-LASSO). In short, in the first step, a tentative
+conditional logistic regression model is fit, either to each covariates
+block separately (<code>type.step1 = &quot;sep&quot;</code>) or to all blocks
+jointly (<code>type.step1 = &quot;comb&quot;</code>). The penalty factor for each
+block is then obtained as the inverse of the mean of the absolute values
+of the estimated coefficients of that block. In this way, blocks that
+contain covariates with large estimated coefficients will be penalized
+less. If all estimated coefficients pertaining to a block are zero, the
+function returns a message. The function returns a list with penalty
+factors corresponding to different blocks.</p>
+<p>The second function relies on the <code>cv.clogitL1</code> function
+of the <code>clogitL1</code> package to perform cross-validation and,
+for a given vector of penalty factors, for instance obtained from
+<code>default.pf</code> returns the value of <code>lambda</code> that
+achieves the minimal cross-validated deviance, see documentation of
+package <code>clogitL1</code> for more details.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>(pf <span class="ot">&lt;-</span> <span class="fu">default.pf</span>(<span class="at">response =</span> Y, <span class="at">stratum =</span> stratum, <span class="at">penalized =</span> X, </span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>                 <span class="at">nfolds =</span> <span class="dv">10</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>                 <span class="at">standardize =</span> <span class="cn">TRUE</span>, <span class="at">p =</span> p, <span class="at">type.step1 =</span> <span class="st">&quot;comb&quot;</span>))</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt; $pf</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt; [1] 32.70923 42.73989</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>(lambda <span class="ot">&lt;-</span> <span class="fu">find.default.lambda</span>(<span class="at">response =</span> Y, <span class="at">penalized =</span> X, </span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>                              <span class="at">standardize =</span> <span class="cn">TRUE</span>, <span class="at">stratum =</span> stratum, </span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>                              <span class="at">p =</span> p,  <span class="at">pf.list  =</span> pf))</span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt; [1] 0.1375511</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>stable3 <span class="ot">&lt;-</span> <span class="fu">stable.clr.g</span>(<span class="at">response =</span> Y, <span class="at">p =</span> p,  </span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>                        <span class="at">standardize =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>                        <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>                        <span class="at">lambda.list =</span> <span class="fu">list</span>(<span class="fu">c</span>(pf[[<span class="dv">1</span>]][<span class="dv">1</span>]<span class="sc">*</span><span class="fu">as.numeric</span>(lambda), pf[[<span class="dv">1</span>]][<span class="dv">2</span>]<span class="sc">*</span><span class="fu">as.numeric</span>(lambda))))</span></code></pre></div>
+<p>The histogram of selection probabilities with true signal variables
+in red and null variables in blue.</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The user can augment the data adaptive vector of penalty factors with
+other vectors.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>alt.pf.list<span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>), <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>), <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">2</span>), pf<span class="sc">$</span>pf)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>alt.lambda <span class="ot">&lt;-</span> <span class="fu">find.default.lambda</span>(<span class="at">response =</span> Y, <span class="at">penalized =</span> X, </span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>                              <span class="at">standardize =</span> <span class="cn">TRUE</span>, <span class="at">stratum =</span> stratum, </span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>                              <span class="at">p =</span> p,  <span class="at">pf.list  =</span> alt.pf.list)</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>lambda.matrix <span class="ot">&lt;-</span> <span class="fu">mapply</span>(<span class="cf">function</span> (x,y) x<span class="sc">*</span>y, lambda, alt.pf.list)</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>lambda.list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_len</span>(<span class="fu">ncol</span>(lambda.matrix)), <span class="cf">function</span>(i) lambda.matrix[,i])</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>stable4 <span class="ot">&lt;-</span> <span class="fu">stable.clr.g</span>(<span class="at">response =</span> Y, <span class="at">p =</span> p,  </span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>                        <span class="at">standardize =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>                        <span class="at">penalized =</span> X, <span class="at">stratum =</span> stratum,</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>                        <span class="at">lambda.list =</span> lambda.list )</span></code></pre></div>
+<p>The histogram of selection probabilities:</p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
 <ol style="list-style-type: decimal">
-<li><p>Boulesteix, A. L., De Bin, R., Jiang, X., &amp; Fuchs, M. (2017). IPF-LASSO: Integrative-penalized regression with penalty factors for prediction based on multi-omics data. Computational and mathematical methods in medicine, 2017.</p></li>
-<li><p>Meinshausen, N., &amp; Bühlmann, P. (2010). Stability selection. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 72(4), 417-473.</p></li>
-<li><p>Shah, R. D., &amp; Samworth, R. J. (2013). Variable selection with error control: another look at stability selection. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 75(1), 55-80.</p></li>
+<li><p>Boulesteix, A. L., De Bin, R., Jiang, X., &amp; Fuchs, M. (2017).
+IPF-LASSO: Integrative-penalized regression with penalty factors for
+prediction based on multi-omics data. Computational and mathematical
+methods in medicine, 2017.</p></li>
+<li><p>Meinshausen, N., &amp; Bühlmann, P. (2010). Stability selection.
+Journal of the Royal Statistical Society: Series B (Statistical
+Methodology), 72(4), 417-473.</p></li>
+<li><p>Shah, R. D., &amp; Samworth, R. J. (2013). Variable selection
+with error control: another look at stability selection. Journal of the
+Royal Statistical Society: Series B (Statistical Methodology), 75(1),
+55-80.</p></li>
 </ol>
 </div>
 
